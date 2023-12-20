@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 03:49:38 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/17 07:38:25 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/20 02:56:52 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ void	ft_rotate(t_list **lst)
 {
 	t_list	*tmp;
 
-	if (lst == NULL || *lst == NULL)
+	if (lst == NULL || *lst == NULL || (**lst).next == NULL)
 		return ;
 	tmp = ft_lstlast(*lst);
 	(*tmp).next = *lst;
-	*lst = (*(*lst)).next;
+	*lst = (**lst).next;
 	(*(*tmp).next).next = NULL;
 }
 
@@ -89,10 +89,66 @@ void	ft_reverse_rotate(t_list **lst)
 	(*tmp).next = NULL;
 }
 
+void	ft_stack_pivot_right(t_list **lst, t_list **lst_b, int pivot)
+{
+
+	if (lst == NULL || *lst == NULL)
+		return ;
+	//printf("%d %d\n", *(int *)(**lst).content, pivot);
+	if (*(int *)(**lst).content < pivot)
+	{
+		ft_push(lst, lst_b);
+		ft_stack_pivot_right(lst, lst_b, pivot);
+	}
+	else if (*(int *)(**lst).content > pivot)
+	{
+		ft_rotate(lst);
+		ft_stack_pivot_right(lst, lst_b, pivot);
+		ft_reverse_rotate(lst);
+	}
+	else
+		ft_push(lst, lst_b);
+}
+
+void    ft_stack_pivot_left(t_list **lst, t_list **lst_b, int pivot)
+{
+        if (lst_b == NULL || *lst_b == NULL)
+                return ;
+        if (*(int *)(**lst_b).content > pivot)
+        {
+                ft_push(lst_b, lst);
+		ft_stack_pivot_left(lst, lst_b, pivot);
+        }
+        else if (*(int *)(**lst_b).content < pivot)
+        {
+                ft_rotate(lst_b);
+                ft_stack_pivot_left(lst, lst_b, pivot);
+                ft_reverse_rotate(lst_b);
+        }
+	else
+		return ;
+
+}
+
+
+t_list	*ft_pop(t_list **lst)
+{
+	t_list	*tmp;
+
+	tmp = NULL;
+	if (lst == NULL || *lst == NULL)
+		return (NULL);
+	tmp = *lst;
+	*lst = (**lst).next;
+	return (tmp);
+}
+
 int	main(int argc, char **argv)
 {
 	t_list	*lst;
 	t_list	*lst_b;
+	t_list	*pivots;
+	t_list	*temp;
 	char	str[4];	
 	int		*tmp;
 	int		i;
@@ -102,9 +158,51 @@ int	main(int argc, char **argv)
 	i = 1;
 	lst = NULL;
 	lst_b = NULL;
+	pivots = NULL;
 	ft_bzero(str, 4);
 	init_list(&lst, &argv[1], argc - 1);
 	i = 0;
+	while (lst != NULL)
+	{
+		ft_stack_pivot_right(&lst, &lst_b, *(int *)(*ft_lstlast(lst)).content);
+		ft_lstadd_front(&pivots, ft_lstnew((*lst_b).content));
+	}
+	printf("HELLO !!\n");
+	printf("# Stack A => ");
+                print_list(lst);
+                printf("\n");
+                printf("# Stack B => ");
+                print_list(lst_b);
+                printf("\n\n");
+
+	tmp = (*ft_lstlast(lst_b)).content;
+	ft_lstadd_back(&pivots, ft_lstnew(tmp));
+	while (pivots != NULL)
+	{
+		temp = ft_pop(&pivots);
+		if (pivots == NULL || temp == NULL)
+			break ;
+		printf("# Stack A => ");
+                print_list(lst);
+                printf("\n");
+                printf("# Stack B => ");
+                print_list(lst_b);
+                printf("\n\n");
+		ft_stack_pivot_left(&lst, &lst_b, *(int *)(*pivots).content);
+		if (*(int *)(*lst).content != *(int *)(*temp).content)
+		{
+			ft_stack_pivot_right(&lst, &lst_b, *(int *)(*temp).content);
+			ft_push(&lst_b, &lst);
+			ft_lstadd_front(&pivots, ft_lstnew((*lst_b).content));
+		}
+		printf("# Stack A => ");
+                print_list(lst);
+                printf("\n");
+                printf("# Stack B => ");
+                print_list(lst_b);
+                printf("\n\n");
+	}
+	printf("%p\n", pivots);
 	while (1)
 	{
 		printf("# Stack A => ");
