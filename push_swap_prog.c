@@ -6,16 +6,12 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 03:57:49 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/22 04:08:43 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/22 09:22:38 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
-
-static void	ft_set_to_null(void *content)
-{
-	content = NULL;
-}
+#include <stdio.h>
 
 void	ft_swap(int *a, int *b)
 {
@@ -33,9 +29,11 @@ void	ft_push(t_list **a, t_list **b)
 	if (a == NULL || *a == NULL)
 		return ;
 	tmp = *a;
-	ft_lstadd_front(b, ft_lstnew((**a).content));
-	*a = (**a).next;
-	ft_lstdelone(tmp, &ft_set_to_null);
+	ft_lstadd_front(b, ft_lstnew((*tmp).content));
+	*a = (*tmp).next;
+	(*tmp).content = NULL;
+	free(tmp);
+	tmp = NULL;
 }
 
 void	ft_rotate(t_list **lst)
@@ -60,6 +58,7 @@ void	ft_reverse_rotate(t_list **lst)
 	while ((*tmp).next != NULL && (*(*tmp).next).next != NULL)
 		tmp = (*tmp).next;
 	ft_lstadd_front(lst, ft_lstnew((*(*tmp).next).content));
-	ft_lstdelone((*tmp).next, &ft_set_to_null);
+	(*(*tmp).next).content = NULL;
+	free((*tmp).next);
 	(*tmp).next = NULL;
 }
