@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 02:12:33 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/22 14:52:21 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/22 23:42:53 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,8 +122,30 @@ void    read_list(t_list *lst)
 {
         if (lst == NULL)
                 return ;
-	read_list((*lst).next);
-	ft_putendl_fd((char *)(*lst).content, 1);
+        ft_putendl_fd((char *)(*lst).content, 1);
+        read_list((*lst).next);
+}
+
+t_list	*clean_prog(t_list *lst)
+{
+	t_list	*new;
+	t_list	*cursor;
+
+	new = NULL;
+	cursor = lst;
+	while (cursor != NULL)
+	{
+		if (new != NULL 
+		&& ft_strncmp((char *)(*new).content, "pa", 2) == 0 
+		&& ft_strncmp((char *)(*cursor).content, "pb", 2) == 0)
+		{
+			ft_pop(&new);
+			ft_pop(&cursor);
+		}
+		else
+			ft_lstadd_front(&new, ft_pop(&cursor));
+	}
+	return (new);
 }
 
 int	main(int argc, char **argv)
@@ -137,6 +159,6 @@ int	main(int argc, char **argv)
 	lst = NULL;
 	init_list(&lst, &argv[1], argc - 1);
 	prog = quick_sort(lst);
-	read_list(prog);
+	read_list(clean_prog(prog));
 	return (0);
 }
