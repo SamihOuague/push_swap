@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 03:49:38 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/21 02:58:04 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/22 01:33:51 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,19 +102,43 @@ void	ft_stack_pivot_right(t_list **lst, t_list **lst_b, int pivot)
 	if (*(int *)(**lst).content < pivot)
 	{
 		ft_push(lst, lst_b);
-		printf("pb\n");
+		ft_putstr_fd("pb\n", 1);
 		ft_stack_pivot_right(lst, lst_b, pivot);
 	}
 	else if (*(int *)(**lst).content > pivot)
 	{
 		ft_rotate(lst);
-		printf("ra\n");
+		ft_putstr_fd("ra\n", 1);
 		ft_stack_pivot_right(lst, lst_b, pivot);
 	}
 	else
 	{
 		ft_push(lst, lst_b);
-		printf("pb\n");
+		ft_putstr_fd("pb\n", 1);
+	}
+}
+
+void    ft_stack_pivot_left(t_list **lst, t_list **lst_b, int pivot)
+{
+        if (lst == NULL || *lst == NULL)
+                return ;
+        if (*(int *)(**lst).content < pivot)
+        {
+                ft_push(lst, lst_b);
+                ft_putstr_fd("pb\n", 1);
+                ft_stack_pivot_left(lst, lst_b, pivot);
+        }
+        else if (*(int *)(**lst).content > pivot)
+        {
+                ft_rotate(lst);
+                ft_putstr_fd("ra\n", 1);
+                ft_stack_pivot_left(lst, lst_b, pivot);
+		ft_putstr_fd("rra\n", 1);
+	}
+        else
+	{
+                ft_push(lst, lst_b);
+		ft_putstr_fd("pb\n", 1);
 	}
 }
 
@@ -297,7 +321,7 @@ void    quick_sort(t_list *unsorted)
              	(*tab1).tab = malloc(sizeof(int));
                 *(int *)(*tab1).tab = (*tab).tab[0];
                 ft_lstadd_front(&lst, ft_lstnew(tab1));
-		printf("pa\n");
+		ft_putstr_fd("pa\n", 1);
 		if ((*tab).size > 1)
 		{
 
@@ -305,20 +329,17 @@ void    quick_sort(t_list *unsorted)
 			(*tab).tab = (*tab).tab + 1;
 			tmpp = tab_to_list(tab);
 			tmp = NULL;
+			i = 0;
+			while ((i++) < (*tab).size)
+                        	ft_putstr_fd("pa\n", 1);
 			while (tmpp != NULL)
         		{
         		        pivot = *(int *)(*ft_lstlast(tmpp)).content;
-        		        ft_stack_pivot_right(&tmpp, &tmp, pivot);
-        		        tab = get_tab(&tmp);
+				ft_stack_pivot_left(&tmpp, &tmp, pivot);
+				tab = get_tab(&tmp);
         		        ft_lstadd_front(&lst_b, ft_lstnew(tab));
 			}
 		}
-	}
-	while (lst != NULL)
-	{
-		tmp = ft_pop(&lst);
-		tab = (t_arraysize *)(*tmp).content;
-		printf("%d\n", (*tab).tab[0]);
 	}
 }
 
@@ -419,7 +440,7 @@ int	main(int argc, char **argv)
         //	ft_push(&lst_b, &lst);
 	//
 	}*/
-	/*lst = NULL;
+/*	lst = NULL;
 	init_list(&lst, &argv[1], argc - 1);
 	lst_b = NULL;
 	while (1)
@@ -467,3 +488,55 @@ int	main(int argc, char **argv)
 	//ft_lstclear(&lst, free);
 	return (0);
 }
+/*
+ra
+ra
+pb
+pb
+pb
+
+ra
+pb
+pb
+pb
+pb
+pb
+
+pa
+rb
+rb
+rrb
+rrb
+pa
+rb
+rrb
+
+pa
+pa
+pa
+pa
+pa
+
+rb
+pb
+pb
+pb
+rrb
+
+rb
+pa
+rb
+pb
+rrb
+rrb
+
+rb
+rrb
+pa
+pa
+
+rb
+rrb
+pa
+pa
+*/
