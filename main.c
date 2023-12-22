@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 04:06:35 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/15 23:04:12 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/22 04:14:14 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,21 @@ int	ft_get_left_size(int *tab, int pivot, int size)
 	return (c);
 }
 
-int     ft_get_right_size(int *tab, int pivot, int size)
+int	ft_get_right_size(int *tab, int pivot, int size)
 {
-        int     i;
-        int     c;
+	int	i;
+	int	c;
 
-        c = 0;
-        i = 0;
-        while (i < size)
-        {
+	c = 0;
+	i = 0;
+	while (i < size)
+	{
 		if (tab[i] > pivot)
-                        c++;
-                i++;
-        }
-        return (c);
+			c++;
+		i++;
+	}
+	return (c);
 }
-
 
 void	ft_quick_sort(int *tab, int size, t_list **list)
 {
@@ -118,7 +117,7 @@ void	ft_quick_sort(int *tab, int size, t_list **list)
 	pivot = malloc(sizeof(int));
 	*pivot = tab[size - 1];
 	left = ft_get_left_size(tab, *pivot, size);
-        right = ft_get_right_size(tab, *pivot, size);
+	right = ft_get_right_size(tab, *pivot, size);
 	if (size <= 1)
 	{
 		ft_lstadd_front(list, ft_lstnew(pivot));
