@@ -6,13 +6,14 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 02:12:33 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/23 05:47:03 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/23 05:54:35 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "push_swap_utils.h"
 #include "push_swap_prog.h"
+#include <stdio.h>
 
 void	ft_stack_pivot_right(t_list **lst, t_list **lst_b, t_list **op, int pivot)
 {
@@ -59,6 +60,16 @@ void	ft_stack_pivot_left(t_list **lst, t_list **lst_b, t_list **op, int pivot)
 		ft_push(lst, lst_b);
 		ft_lstadd_front(op, ft_lstnew(ft_strdup("pb")));
 	}
+}
+
+void    get_infos(t_list *lst, t_list *lst_b)
+{
+	printf("# Stack A => ");
+	print_list(lst);
+	printf("\n");
+	printf("# Stack B => ");
+	print_list(lst_b);
+	printf("\n\n");
 }
 
 t_list	*quick_sort(t_list *unsorted)
@@ -151,14 +162,60 @@ t_list	*clean_pb_prog(t_list *lst)
 int	main(int argc, char **argv)
 {
 	t_list	*lst;
+	t_list	*lst_b;
 	t_list	*prog;
+	int	i;
+	char	str[4];
 
-	lst = NULL;
 	if (argc == 1)
 		return (1);
+	i = 0;
 	lst = NULL;
+	lst_b = NULL;
 	init_list(&lst, &argv[1], argc - 1);
 	prog = quick_sort(lst);
 	read_list(clean_pb_prog(prog));
+	
+	while (1)
+        {
+                get_infos(lst, lst_b);
+                scanf("%3s", str);
+                if (ft_strncmp(str, "sa", 3) == 0 && ft_lstsize(lst) >= 2)
+                        ft_swap((*lst).content, (*(*lst).next).content);
+                else if (ft_strncmp(str, "sb", 3) == 0 && ft_lstsize(lst_b) >= 2)
+                        ft_swap((*lst_b).content, (*(*lst_b).next).content);
+                else if (ft_strncmp(str, "ss", 3) == 0)
+                {
+                        if (ft_lstsize(lst) >= 2)
+                                ft_swap((*lst).content, (*(*lst).next).content);
+                        if (ft_lstsize(lst_b) >= 2)
+                                ft_swap((*lst_b).content, (*(*lst_b).next).content);
+                }
+                else if (ft_strncmp(str, "pb", 3) == 0 && ft_lstsize(lst) >= 1)
+                        ft_push(&lst, &lst_b);
+                else if (ft_strncmp(str, "pa", 3) == 0 && ft_lstsize(lst_b) >= 1)
+                        ft_push(&lst_b, &lst);
+                else if (ft_strncmp(str, "ra", 3) == 0)
+                        ft_rotate(&lst);
+                else if (ft_strncmp(str, "rb", 3) == 0)
+                        ft_rotate(&lst_b);
+                else if (ft_strncmp(str, "rr", 3) == 0)
+                {
+                        ft_rotate(&lst);
+                        ft_rotate(&lst_b);
+                }
+                else if (ft_strncmp(str, "rra", 3) == 0)
+                        ft_reverse_rotate(&lst);
+                else if (ft_strncmp(str, "rrb", 3) == 0)
+                        ft_reverse_rotate(&lst_b);
+                else if (ft_strncmp(str, "rrr", 3) == 0)
+                {
+                        ft_reverse_rotate(&lst);
+                        ft_reverse_rotate(&lst_b);
+                }
+                else if (ft_strncmp(str, "qui", 3) == 0)
+                        break;
+                i++;
+        }
 	return (0);
 }
