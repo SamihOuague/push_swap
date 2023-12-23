@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 02:12:33 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/23 08:14:43 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/23 09:42:09 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,25 @@ void	ft_stack_pivot_left(t_list **lst, t_list **lst_b, t_list **op, int pivot)
 	}
 }
 
+t_list	*find_and_replace(t_list **lst, t_list *pattern, t_list *new)
+{
+	t_list	*new;
+	t_list	*cursor;
+	int		count;
+
+	if (lst == NULL || *lst == NULL)
+		return (NULL);
+	if (pattern == NULL)
+		return (*lst);
+	count = 0;
+	new = NULL;
+	cursor = pattern;
+	while (*lst != NULL)
+	{
+		if (ft_strncmp((char *)(**lst).content, (char *)(*cursor).content)
+		ft_lstadd_front(&new, ft_pop(lst));
+	}
+}
 
 t_list	*quick_sort(t_list *unsorted)
 {
@@ -99,23 +118,23 @@ t_list	*quick_sort(t_list *unsorted)
 		*(int *)(*tab1).tab = (*tab).tab[0];
 		ft_lstadd_front(&lst, ft_lstnew(tab1));
 		ft_lstadd_front(&op, ft_lstnew(ft_strdup("pa")));
-		if ((*tab).size > 1)
-		{
-			(*tab).size = (*tab).size - 1;
-			(*tab).tab = (*tab).tab + 1;
-			tmpp = tab_to_list(tab);
-			tmp = NULL;
-			i = 0;
-			while ((i++) < (*tab).size)
-				ft_lstadd_front(&op, ft_lstnew(ft_strdup("pa")));
-			while (tmpp != NULL)
-			{
-				pivot = *(int *)(*ft_lstlast(tmpp)).content;
-				ft_stack_pivot_left(&tmpp, &tmp, &op, pivot);
-				tab = get_tab(&tmp);
-				ft_lstadd_front(&lst_b, ft_lstnew(tab));
-			}
-		}
+		(*tab).size = (*tab).size - 1;
+                (*tab).tab = (*tab).tab + 1;
+		if ((*tab).size > 0)
+                {
+                        tmpp = tab_to_list(tab);
+                        tmp = NULL;
+                        i = 0;
+                        while ((i++) < (*tab).size)
+                                ft_lstadd_front(&op, ft_lstnew(ft_strdup("pa")));
+                        while (tmpp != NULL)
+                        {
+                                pivot = *(int *)(*ft_lstlast(tmpp)).content;
+                                ft_stack_pivot_left(&tmpp, &tmp, &op, pivot);
+                                tab = get_tab(&tmp);
+                                ft_lstadd_front(&lst_b, ft_lstnew(tab));
+                        }
+                }
 	}
 	return (op);
 }
@@ -163,13 +182,13 @@ int	main(int argc, char **argv)
 	lst = NULL;
 	init_list(&lst, &argv[1], argc - 1);
 	prog = quick_sort(lst);
-	printf("%d\n", ft_lstsize(prog));
+	//printf("%d\n", ft_lstsize(prog));
 	prog = clean_prog(prog, "pb", "pa");
-	printf("%d\n", ft_lstsize(prog));
+	//printf("%d\n", ft_lstsize(prog));
 	prog = clean_prog(prog, "pa", "pb");
-        printf("%d\n", ft_lstsize(prog));
+        //printf("%d\n", ft_lstsize(prog));
 	prog = clean_prog(prog, "ra", "rra");
-	printf("%d\n", ft_lstsize(prog));
-	//read_list(prog);
+	//printf("%d\n", ft_lstsize(prog));
+	read_list(prog);
 	return (0);
 }
