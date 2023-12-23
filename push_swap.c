@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 02:12:33 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/23 05:54:35 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/23 08:14:43 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,6 @@ void	ft_stack_pivot_left(t_list **lst, t_list **lst_b, t_list **op, int pivot)
 	}
 }
 
-void    get_infos(t_list *lst, t_list *lst_b)
-{
-	printf("# Stack A => ");
-	print_list(lst);
-	printf("\n");
-	printf("# Stack B => ");
-	print_list(lst_b);
-	printf("\n\n");
-}
 
 t_list	*quick_sort(t_list *unsorted)
 {
@@ -133,11 +124,11 @@ void    read_list(t_list *lst)
 {
         if (lst == NULL)
                 return ;
-        ft_putendl_fd((char *)(*lst).content, 1);
         read_list((*lst).next);
+	ft_putendl_fd((char *)(*lst).content, 1);
 }
 
-t_list	*clean_pb_prog(t_list *lst)
+t_list	*clean_prog(t_list *lst, char *s1, char *s2)
 {
 	t_list	*new;
 	t_list	*cursor;
@@ -147,8 +138,8 @@ t_list	*clean_pb_prog(t_list *lst)
 	while (cursor != NULL)
 	{
 		if (new != NULL 
-		&& ft_strncmp((char *)(*new).content, "pa", 2) == 0 
-		&& ft_strncmp((char *)(*cursor).content, "pb", 2) == 0)
+		&& ft_strncmp((char *)(*new).content, s1, 3) == 0 
+		&& ft_strncmp((char *)(*cursor).content, s2, 3) == 0)
 		{
 			ft_pop(&new);
 			ft_pop(&cursor);
@@ -156,66 +147,29 @@ t_list	*clean_pb_prog(t_list *lst)
 		else
 			ft_lstadd_front(&new, ft_pop(&cursor));
 	}
-	return (new);
+	cursor = NULL;
+	while (new != NULL)
+		ft_lstadd_front(&cursor, ft_pop(&new));
+	return (cursor);
 }
 
 int	main(int argc, char **argv)
 {
 	t_list	*lst;
-	t_list	*lst_b;
 	t_list	*prog;
-	int	i;
-	char	str[4];
 
 	if (argc == 1)
 		return (1);
-	i = 0;
 	lst = NULL;
-	lst_b = NULL;
 	init_list(&lst, &argv[1], argc - 1);
 	prog = quick_sort(lst);
-	read_list(clean_pb_prog(prog));
-	
-	while (1)
-        {
-                get_infos(lst, lst_b);
-                scanf("%3s", str);
-                if (ft_strncmp(str, "sa", 3) == 0 && ft_lstsize(lst) >= 2)
-                        ft_swap((*lst).content, (*(*lst).next).content);
-                else if (ft_strncmp(str, "sb", 3) == 0 && ft_lstsize(lst_b) >= 2)
-                        ft_swap((*lst_b).content, (*(*lst_b).next).content);
-                else if (ft_strncmp(str, "ss", 3) == 0)
-                {
-                        if (ft_lstsize(lst) >= 2)
-                                ft_swap((*lst).content, (*(*lst).next).content);
-                        if (ft_lstsize(lst_b) >= 2)
-                                ft_swap((*lst_b).content, (*(*lst_b).next).content);
-                }
-                else if (ft_strncmp(str, "pb", 3) == 0 && ft_lstsize(lst) >= 1)
-                        ft_push(&lst, &lst_b);
-                else if (ft_strncmp(str, "pa", 3) == 0 && ft_lstsize(lst_b) >= 1)
-                        ft_push(&lst_b, &lst);
-                else if (ft_strncmp(str, "ra", 3) == 0)
-                        ft_rotate(&lst);
-                else if (ft_strncmp(str, "rb", 3) == 0)
-                        ft_rotate(&lst_b);
-                else if (ft_strncmp(str, "rr", 3) == 0)
-                {
-                        ft_rotate(&lst);
-                        ft_rotate(&lst_b);
-                }
-                else if (ft_strncmp(str, "rra", 3) == 0)
-                        ft_reverse_rotate(&lst);
-                else if (ft_strncmp(str, "rrb", 3) == 0)
-                        ft_reverse_rotate(&lst_b);
-                else if (ft_strncmp(str, "rrr", 3) == 0)
-                {
-                        ft_reverse_rotate(&lst);
-                        ft_reverse_rotate(&lst_b);
-                }
-                else if (ft_strncmp(str, "qui", 3) == 0)
-                        break;
-                i++;
-        }
+	printf("%d\n", ft_lstsize(prog));
+	prog = clean_prog(prog, "pb", "pa");
+	printf("%d\n", ft_lstsize(prog));
+	prog = clean_prog(prog, "pa", "pb");
+        printf("%d\n", ft_lstsize(prog));
+	prog = clean_prog(prog, "ra", "rra");
+	printf("%d\n", ft_lstsize(prog));
+	//read_list(prog);
 	return (0);
 }
