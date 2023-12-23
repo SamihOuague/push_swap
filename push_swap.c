@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 02:12:33 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/22 23:42:53 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/23 05:47:03 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_stack_pivot_right(t_list **lst, t_list **lst_b, t_list **op, int pivot)
 {
 	if (lst == NULL || *lst == NULL)
 		return ;
-	if (*(int *)(**lst).content < pivot)
+	else if (*(int *)(**lst).content < pivot)
 	{
 		ft_push(lst, lst_b);
 		ft_lstadd_front(op, ft_lstnew(ft_strdup("pb")));
@@ -126,7 +126,7 @@ void    read_list(t_list *lst)
         read_list((*lst).next);
 }
 
-t_list	*clean_prog(t_list *lst)
+t_list	*clean_pb_prog(t_list *lst)
 {
 	t_list	*new;
 	t_list	*cursor;
@@ -159,6 +159,6 @@ int	main(int argc, char **argv)
 	lst = NULL;
 	init_list(&lst, &argv[1], argc - 1);
 	prog = quick_sort(lst);
-	read_list(clean_prog(prog));
+	read_list(clean_pb_prog(prog));
 	return (0);
 }
