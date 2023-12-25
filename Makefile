@@ -6,13 +6,13 @@
 #    By: souaguen <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/22 08:37:09 by  souaguen         #+#    #+#              #
-#    Updated: 2023/12/22 09:13:24 by souaguen         ###   ########.fr        #
+#    Updated: 2023/12/24 21:31:26 by souaguen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=cc
 NAME=push_swap
-SRC=push_swap.c \
+SRC=push_swap_v2.c \
     push_swap_utils.c \
     push_swap_prog.c
 OBJ=$(SRC:.c=.o)

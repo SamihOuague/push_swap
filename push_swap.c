@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 02:12:33 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/23 09:42:09 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/24 07:25:18 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,26 +62,6 @@ void	ft_stack_pivot_left(t_list **lst, t_list **lst_b, t_list **op, int pivot)
 	}
 }
 
-t_list	*find_and_replace(t_list **lst, t_list *pattern, t_list *new)
-{
-	t_list	*new;
-	t_list	*cursor;
-	int		count;
-
-	if (lst == NULL || *lst == NULL)
-		return (NULL);
-	if (pattern == NULL)
-		return (*lst);
-	count = 0;
-	new = NULL;
-	cursor = pattern;
-	while (*lst != NULL)
-	{
-		if (ft_strncmp((char *)(**lst).content, (char *)(*cursor).content)
-		ft_lstadd_front(&new, ft_pop(lst));
-	}
-}
-
 t_list	*quick_sort(t_list *unsorted)
 {
 	t_arraysize	*tab;
@@ -93,7 +73,6 @@ t_list	*quick_sort(t_list *unsorted)
 	t_list		*op;
 	int			pivot;
 	int			i;
-
 
 	lst = unsorted;
 	lst_b = NULL;
@@ -172,11 +151,53 @@ t_list	*clean_prog(t_list *lst, char *s1, char *s2)
 	return (cursor);
 }
 
+t_list  *find_and_replace(t_list **lst, t_list *pattern, char **cmd)
+{
+        t_list  *new;
+        t_list  *cursor;
+        int             count;
+
+        if (lst == NULL || *lst == NULL)
+                return (NULL);
+        if (pattern == NULL)
+                return (*lst);
+        count = 0;
+        new = NULL;
+        cursor = pattern;
+        while (*lst != NULL)
+        {
+		ft_lstadd_front(&new, ft_pop(lst));
+		if (ft_strncmp((char *)(*new).content, (char *)(*cursor).content, 3) == 0)
+			cursor = (*cursor).next;
+		else
+                        cursor = pattern;
+		if (cursor == NULL)
+                {
+                        count = ft_lstsize(pattern);
+                        while (count > 0)
+                        {
+                                ft_pop(&new);
+                                count--;
+                        }
+			count = -1;
+			while (cmd[++count] != NULL)
+				ft_lstadd_front(&new, ft_lstnew(cmd[count]));
+			cursor = pattern;
+		}
+	}
+        cursor = NULL;
+        while (new != NULL)
+                ft_lstadd_front(&cursor, ft_pop(&new));
+        return (cursor);
+}
+
 int	main(int argc, char **argv)
 {
 	t_list	*lst;
 	t_list	*prog;
-
+	t_list	*pattern_list;
+	char	**pattern;
+	int		i;
 	if (argc == 1)
 		return (1);
 	lst = NULL;
@@ -189,6 +210,18 @@ int	main(int argc, char **argv)
         //printf("%d\n", ft_lstsize(prog));
 	prog = clean_prog(prog, "ra", "rra");
 	//printf("%d\n", ft_lstsize(prog));
+	i = 0;
+	pattern = ft_split("ra pb rra pa", ' ');
+        pattern_list = NULL;
+        while (pattern[i] != NULL)
+        {
+                ft_lstadd_front(&pattern_list, ft_lstnew(pattern[i]));
+                i++;
+        }
+	pattern = ft_split("sa", ' ');
+	prog = find_and_replace(&prog, pattern_list, pattern);
+	//printf("%d\n", ft_lstsize(prog));
+	
 	read_list(prog);
 	return (0);
 }
