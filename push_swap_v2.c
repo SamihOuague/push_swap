@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/25 11:38:03 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/25 13:39:21 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,50 +160,6 @@ int     ft_abs(int n)
         if (n < 0)
                 return (n * -1);
         return (n);
-} 
-
-int     get_first_number_left(t_list *lst, int pivot)
-{
-        t_list  *cursor;
-        int             first;
-        int             size;
-
-        cursor = lst;
-        first = 0;
-        while (cursor != NULL)
-        {       
-                if (*(int *)(*cursor).content <= pivot)
-                        break ;
-                first++; 
-                cursor = (*cursor).next;
-        }
-        size = ft_lstsize(lst);
-        if (first > (size / 2))
-                return (first - size);
-        return (first);
-}
-
-int     get_last_number_left(t_list *lst, int pivot)
-{
-        t_list  *cursor;
-        int     last;
-        int     size;
-        int     i;
-
-        i = 0;
-        last = i;
-        cursor = lst;
-        while (cursor != NULL)
-        {       
-                if (*(int *)(*cursor).content <= pivot)
-                        last = i;
-                cursor = (*cursor).next;
-                i++;
-        }
-        size = ft_lstsize(lst);
-        if (last > (size / 2))
-                return (last - size);
-        return (last);
 }
 
 int     get_first_number(t_list *lst, int pivot)
@@ -342,13 +298,80 @@ void	push_stack_b(t_list **lst_a, t_list **lst_b, t_list *sorted, t_list **op, i
 	}
 }
 
+t_list  *find_and_replace(t_list **lst, t_list *pattern, char **cmd)
+{
+        t_list  *new;
+        t_list  *cursor;
+        int             count;
+
+        if (lst == NULL || *lst == NULL)
+                return (NULL);
+        if (pattern == NULL)
+                return (*lst);
+        count = 0;
+        new = NULL;
+        cursor = pattern;
+        while (*lst != NULL)
+        {
+		ft_lstadd_front(&new, ft_pop(lst));
+		if (ft_strncmp((char *)(*new).content, (char *)(*cursor).content, 3) == 0)
+			cursor = (*cursor).next;
+		else
+                        cursor = pattern;
+		if (cursor == NULL)
+                {
+                        count = ft_lstsize(pattern);
+                        while (count > 0)
+                        {
+                                ft_pop(&new);
+                                count--;
+                        }
+			count = -1;
+			while (cmd[++count] != NULL)
+				ft_lstadd_front(&new, ft_lstnew(cmd[count]));
+			cursor = pattern;
+		}
+	}
+        cursor = NULL;
+        while (new != NULL)
+                ft_lstadd_front(&cursor, ft_pop(&new));
+        return (cursor);
+}
+
+t_list	*clean_prog(t_list *lst, char *s1, char *s2)
+{
+	t_list	*new;
+	t_list	*cursor;
+
+	new = NULL;
+	cursor = lst;
+	while (cursor != NULL)
+	{
+		if (new != NULL 
+		&& ft_strncmp((char *)(*new).content, s1, 3) == 0 
+		&& ft_strncmp((char *)(*cursor).content, s2, 3) == 0)
+		{
+			ft_pop(&new);
+			ft_pop(&cursor);
+		}
+		else
+			ft_lstadd_front(&new, ft_pop(&cursor));
+	}
+	cursor = NULL;
+	while (new != NULL)
+		ft_lstadd_front(&cursor, ft_pop(&new));
+	return (cursor);
+}
+
 int     main(int argc, char **argv)
 {
         t_list  *lst;
 	t_list	*lst_a;
 	t_list	*lst_b;
 	t_list	*prog;
-
+	t_list	*pattern_list;
+	char		**pattern;
+	int			i;
         if (argc < 2)
 		return (1);
 	
@@ -360,10 +383,26 @@ int     main(int argc, char **argv)
 	init_list(&lst_a, &argv[1], argc - 1);
 		
 	ft_quick_sort(init_tab(argv + 1, argc - 1), argc - 1, &lst);
-	push_stack_b(&lst_a, &lst_b, lst, &prog, ft_max(4, ft_lstsize(lst_a) / 5));
+	push_stack_b(&lst_a, &lst_b, lst, &prog, ft_max(4, ft_lstsize(lst_a) / 9));
 	lst = NULL;
 	ft_quick_sort(init_tab(argv + 1, argc - 1), argc - 1, &lst);
 	push_stack_a(&lst_a, &lst_b, lst, &prog);
+	i = 0;
+	pattern = ft_split("rb ra", ' ');
+        pattern_list = NULL;
+        while (pattern[i] != NULL)
+        {
+                ft_lstadd_front(&pattern_list, ft_lstnew(pattern[i]));
+                i++;
+        }
+	pattern = ft_split("rr", ' ');
+        prog = find_and_replace(&prog, pattern_list, pattern);
 	read_list(prog);
+	ft_lstclear(&lst_a, free);
+	ft_lstclear(&pattern_list, free);
+	i = -1;
+	while (pattern[(++i)] != NULL)
+		free(pattern[i]);
+	free(pattern);
 	return (0);
 }
