@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/26 07:15:30 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/26 07:31:04 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -561,6 +561,8 @@ int     main(int argc, char **argv)
         }
 	pattern = ft_split("rr", ' ');
         prog = find_and_replace(&prog, pattern_list, pattern);
+	prog = clean_prog(prog, "rrb", "rb");
+	i = 0;
 	read_list(prog);
 	ft_lstclear(&lst_a, free);
 	ft_lstclear(&pattern_list, free);
