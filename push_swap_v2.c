@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/25 13:39:21 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/26 07:15:30 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,42 +206,202 @@ int     get_last_number(t_list *lst, int pivot)
         return (last);
 }
 
-void	push_number_list(t_list **lst_a, t_list **lst_b, t_list **n, t_list **op)
+int     get_first_number_left(t_list *lst, int pivot)
 {
-	int	n_mov;
+        t_list  *cursor;
+        int             first;
+        int             size;
 
-	n_mov = get_first_number(*lst_b, *(int *)(**n).content);
+        cursor = lst;
+        first = 0;
+        while (cursor != NULL)
+        {       
+                if (*(int *)(*cursor).content == pivot)
+                        break ;
+                first++;
+                cursor = (*cursor).next;
+        }
+        size = ft_lstsize(lst);
+        if (first > (size / 2))
+                return (first - size);
+        return (first);
+}
+
+int     get_last_number_left(t_list *lst, int pivot)
+{
+        t_list  *cursor;
+        int     last;
+        int     size;
+        int     i;
+
+        i = 0;
+        last = i;
+        cursor = lst;
+        while (cursor != NULL)
+        {
+                if (*(int *)(*cursor).content == pivot)
+                        last = i;
+                cursor = (*cursor).next;
+                i++;
+        }
+        size = ft_lstsize(lst);
+        if (last > (size / 2))
+                return (last - size);
+        return (last);
+}
+
+void	push_stack_a(t_list **lst_a, t_list **lst_b, t_list *sorted, t_list **op, int size)
+{
+	t_list	*tmp;
+	t_list	*tmpp;
+	int		n_mov;
+	int		n_mov_2;
+	int		pivot;
+	int		pivot_2;
+	int		i;
+	int		count_n;
+	/*n_mov = get_first_number(*lst_b, *(int *)(**n).content);
 	if (ft_abs(get_first_number(*lst_b, *(int *)(**n).content)) > ft_abs(get_last_number(*lst_b, *(int *)(**n).content)))
-		n_mov = get_last_number(*lst_b, *(int *)(**n).content);
+		n_mov = get_last_number(*lst_b, *(int *)(**n).content);*/
 	if (lst_a == NULL || lst_b == NULL || *lst_b == NULL)
 		return ;
-	if (*(int *)(**lst_b).content == *(int *)(**n).content)
+	tmp = NULL;
+	tmpp = NULL;
+	n_mov = 0;
+	n_mov_2 = 0;
+	count_n = 0;
+	while (*lst_b != NULL)
 	{
-		ft_push(lst_b, lst_a);
-		ft_pop(n);
-		ft_lstadd_front(op, ft_lstnew(ft_strdup("pa")));
-	}
-	else
-	{
-		if (n_mov >= 0)
+		if (tmp == NULL && tmpp == NULL)
+        	{
+			i = -1;
+                        while (sorted != NULL && (++i) < (size / 2))
+                        {
+                                if (i < (size / 4))
+                                        ft_lstadd_front(&tmp, ft_pop(&sorted));
+                                else
+                                        ft_lstadd_front(&tmpp, ft_pop(&sorted));
+                        }
+                        //ft_lstadd_front(&tmp, ft_pop(&sorted));
+        	       	//ft_lstadd_front(&tmpp, ft_pop(&sorted));
+			if (tmp != NULL)
+                        {
+                                pivot = *(int *)(*tmp).content;
+                                pivot_2 = pivot;
+                        }
+
+                        if (tmpp != NULL)
+                                pivot_2 = *(int *)(*tmpp).content;
+
+                        n_mov = get_first_number_left(*lst_b, pivot);
+                        if (ft_abs(n_mov) > ft_abs(get_last_number_left(*lst_b, pivot)))
+                                n_mov = get_last_number_left(*lst_b, pivot);
+
+                        n_mov_2 = get_first_number_left(*lst_b, pivot_2);
+                        if (ft_abs(n_mov_2) > ft_abs(get_last_number_left(*lst_b, pivot_2)))
+                                        n_mov_2 = get_last_number_left(*lst_b, pivot_2);
+
+                        /*if (tmp == NULL || (tmpp != NULL && ft_abs(n_mov) > ft_abs(n_mov_2)))
+                                n_mov = n_mov_2;*/
+			
+			i = -1;
+			while ((++i) < count_n)
+			{
+				if (ft_abs(n_mov) > i && n_mov < 0)
+				{
+					ft_lstadd_front(op, ft_lstnew(ft_strdup("rrr")));
+					ft_reverse_rotate(lst_b);
+				}
+				else
+					ft_lstadd_front(op, ft_lstnew(ft_strdup("rra")));
+				ft_reverse_rotate(lst_a);
+			}
+			count_n = 0;
+			tmp = reverse_list(tmp);
+       		}
+		else if (tmp == NULL)
 		{
-			ft_rotate(lst_b);
-			ft_lstadd_front(op, ft_lstnew(ft_strdup("rb")));
+			tmp = reverse_list(tmpp);
+			tmpp = NULL;
+		}
+		else if (*(int *)(**lst_b).content == pivot)
+		{
+			ft_push(lst_b, lst_a);
+			ft_pop(&tmp);
+			ft_lstadd_front(op, ft_lstnew(ft_strdup("pa")));
+		}
+		else if (*(int *)(**lst_b).content == pivot_2)
+		{
+			ft_push(lst_b, lst_a);
+			ft_rotate(lst_a);
+                        ft_pop(&tmpp);
+			ft_lstadd_front(op, ft_lstnew(ft_strdup("pa")));
+			if (tmp != NULL)
+                        {
+                                pivot = *(int *)(*tmp).content;
+                                pivot_2 = pivot;
+                        }
+
+                        if (tmpp != NULL)
+                                pivot_2 = *(int *)(*tmpp).content;
+
+                        n_mov = get_first_number_left(*lst_b, pivot);
+                        if (ft_abs(n_mov) > ft_abs(get_last_number_left(*lst_b, pivot)))
+                                n_mov = get_last_number_left(*lst_b, pivot);
+
+                        //if (tmp == NULL || (tmpp != NULL && ft_abs(n_mov) > ft_abs(n_mov_2)))
+                        //        n_mov = n_mov_2;
+			if (n_mov > 0)
+                        {       
+                                ft_lstadd_front(op, ft_lstnew(ft_strdup("rr")));
+                        	ft_rotate(lst_b);
+                        }
+                        else
+                        	ft_lstadd_front(op, ft_lstnew(ft_strdup("ra")));	
+			count_n++;
 		}
 		else
 		{
-			ft_lstadd_front(op, ft_lstnew(ft_strdup("rrb")));
-			ft_reverse_rotate(lst_b);
+			if (n_mov >= 0)
+			{
+				ft_rotate(lst_b);
+				ft_lstadd_front(op, ft_lstnew(ft_strdup("rb")));
+			}
+			else
+			{
+				ft_lstadd_front(op, ft_lstnew(ft_strdup("rrb")));
+				ft_reverse_rotate(lst_b);
+			}
 		}
-		push_number_list(lst_a, lst_b, n, op);
+		if (*lst_b != NULL)
+		{
+			if (tmp != NULL)
+			{
+				pivot = *(int *)(*tmp).content;
+        			pivot_2 = pivot;
+			}
+			
+			if (tmpp != NULL)
+        		        pivot_2 = *(int *)(*tmpp).content;	
+			
+			n_mov = get_first_number_left(*lst_b, pivot);
+        		if (ft_abs(n_mov) > ft_abs(get_last_number_left(*lst_b, pivot)))
+        		        n_mov = get_last_number_left(*lst_b, pivot);
+			
+			n_mov_2 = get_first_number_left(*lst_b, pivot_2);
+        		if (ft_abs(n_mov_2) > ft_abs(get_last_number_left(*lst_b, pivot_2)))
+        			        n_mov_2 = get_last_number_left(*lst_b, pivot_2);
+        		
+			//if (tmp == NULL || (tmpp != NULL && ft_abs(n_mov) > ft_abs(n_mov_2)))
+        		//        n_mov = n_mov_2;
+		}
 	}
-
-}
-
-void	push_stack_a(t_list **lst_a, t_list **lst_b, t_list *sorted, t_list **op)
-{
-	while (*lst_b != NULL && sorted != NULL)
-		push_number_list(lst_a, lst_b, &sorted, op);
+	i = -1;
+	while ((++i) < count_n)
+        {
+        	ft_lstadd_front(op, ft_lstnew(ft_strdup("rra")));
+                ft_reverse_rotate(lst_a);
+        }
 }
 
 
@@ -381,12 +541,16 @@ int     main(int argc, char **argv)
 	prog = NULL;
 
 	init_list(&lst_a, &argv[1], argc - 1);
-		
+	if (ft_lstsize(lst_a) > 300)
+		i = ft_lstsize(lst_a) / 10;
+	else
+		i = ft_lstsize(lst_a) / 5;
 	ft_quick_sort(init_tab(argv + 1, argc - 1), argc - 1, &lst);
-	push_stack_b(&lst_a, &lst_b, lst, &prog, ft_max(4, ft_lstsize(lst_a) / 9));
-	lst = NULL;
-	ft_quick_sort(init_tab(argv + 1, argc - 1), argc - 1, &lst);
-	push_stack_a(&lst_a, &lst_b, lst, &prog);
+        push_stack_b(&lst_a, &lst_b, lst, &prog, ft_max(4, i));
+        lst = NULL;
+        ft_quick_sort(init_tab(argv + 1, argc - 1), argc - 1, &lst);
+        push_stack_a(&lst_a, &lst_b, lst, &prog, ft_max(4, i));
+
 	i = 0;
 	pattern = ft_split("rb ra", ' ');
         pattern_list = NULL;
