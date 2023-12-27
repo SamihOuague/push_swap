@@ -6,17 +6,17 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/27 03:50:50 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/27 06:42:34 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
+#include "push_swap.h"
 #include "push_swap_utils.h"
 #include "push_swap_prog.h"
-#include "quick_sort.h"
 #include <stdio.h>
 
-void	tmp_init(t_list **tmp, t_list **tmpp, t_list **sorted, int size)
+static void	tmp_init(t_list **tmp, t_list **tmpp, t_list **sorted, int size)
 {
 	int	i;
 

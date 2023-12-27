@@ -6,13 +6,14 @@
 #    By: souaguen <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/22 08:37:09 by  souaguen         #+#    #+#              #
-#    Updated: 2023/12/27 03:22:55 by souaguen         ###   ########.fr        #
+#    Updated: 2023/12/27 05:44:48 by souaguen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=cc
 NAME=push_swap
-SRC=push_swap_v3.c \
+SRC=push_swap_a.c \
+    push_swap_b.c \
     quick_sort.c \
     push_swap_utils.c \
     push_swap_prog.c

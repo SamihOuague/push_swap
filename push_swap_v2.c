@@ -6,16 +6,18 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/26 07:31:04 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/27 05:27:21 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
+#include "push_swap.h"
 #include "push_swap_utils.h"
 #include "push_swap_prog.h"
+#include "quick_sort.h"
 #include <stdio.h>
 
-int     ft_get_left_size(int *tab, int pivot, int size)
+/*int     ft_get_left_size(int *tab, int pivot, int size)
 {
         int     i;
         int     c;
@@ -109,7 +111,7 @@ void    ft_quick_sort(int *tab, int size, t_list **list)
         free(tab_1);
         free(tab_2);
 }
-
+*/
 void    read_list(t_list *lst)
 {       
         if (lst == NULL)
@@ -405,7 +407,7 @@ void	push_stack_a(t_list **lst_a, t_list **lst_b, t_list *sorted, t_list **op, i
 }
 
 
-void	push_stack_b(t_list **lst_a, t_list **lst_b, t_list *sorted, t_list **op, int size)
+/*void	push_stack_b(t_list **lst_a, t_list **lst_b, t_list *sorted, t_list **op, int size)
 {
 	t_list	*tmp;
 	t_list	*tmpp;
@@ -457,7 +459,7 @@ void	push_stack_b(t_list **lst_a, t_list **lst_b, t_list *sorted, t_list **op, i
 		}
 	}
 }
-
+*/
 t_list  *find_and_replace(t_list **lst, t_list *pattern, char **cmd)
 {
         t_list  *new;
@@ -546,7 +548,7 @@ int     main(int argc, char **argv)
 	else
 		i = ft_lstsize(lst_a) / 5;
 	ft_quick_sort(init_tab(argv + 1, argc - 1), argc - 1, &lst);
-        push_stack_b(&lst_a, &lst_b, lst, &prog, ft_max(4, i));
+        lst_b = push_stack_b(&lst_a, reverse_list(lst), &prog, ft_max(4, i));
         lst = NULL;
         ft_quick_sort(init_tab(argv + 1, argc - 1), argc - 1, &lst);
         push_stack_a(&lst_a, &lst_b, lst, &prog, ft_max(4, i));
