@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/27 08:18:54 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/27 10:40:18 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@
 
 typedef struct	s_args
 {
-	t_list	*lst_a;
-	t_list	*lst_b;
 	t_list	*tmp[2];
-	t_list	*op;
 	int	pivot[2];
 	int	n_mov;
+	int	count_n;
 }	t_args;
 
 void	read_list(t_list *lst)
@@ -167,7 +165,7 @@ int	get_last_number_left(t_list *lst, int pivot)
 	return (last);
 }
 
-static void	tmp_init(t_list **tmp, t_list **tmpp, t_list **sorted, int size)
+static void	tmp_init(t_args *args, t_list **sorted, int size)
 {
 	int	i;
 
@@ -175,38 +173,38 @@ static void	tmp_init(t_list **tmp, t_list **tmpp, t_list **sorted, int size)
 	while (sorted != NULL && (++i) < (size / 2))
 	{
 		if (i < (size / 4))
-			ft_lstadd_front(tmp, ft_pop(sorted));
+			ft_lstadd_front(&(*args).tmp[0], ft_pop(sorted));
 		else
-			ft_lstadd_front(tmpp, ft_pop(sorted));
+			ft_lstadd_front(&(*args).tmp[1], ft_pop(sorted));
 	}
 }
 
-int	reset_pivot(t_list *lst_b, t_list *tmp, t_list *tmpp, int *pivot, int *pivot_2)
+int	reset_pivot(t_list *lst_b, t_args *args)
 {
 	int	n_mov;
 
 	n_mov = 0;
-	if (tmp != NULL)
+	if ((*args).tmp[0] != NULL)
 	{
-		*pivot = *(int *)(*tmp).content;
-		*pivot_2 = *pivot;
+		(*args).pivot[0] = *(int *)(*(*args).tmp[0]).content;
+		(*args).pivot[1] = (*args).pivot[0];
 	}
-	if (tmpp != NULL)
-		*pivot_2 = *(int *)(*tmpp).content;
-	n_mov = get_first_number_left(lst_b, *pivot);
-	if (ft_abs(n_mov) > ft_abs(get_last_number_left(lst_b, *pivot)))
-		n_mov = get_last_number_left(lst_b, *pivot);
+	if ((*args).tmp[1] != NULL)
+		(*args).pivot[1] = *(int *)(*(*args).tmp[1]).content;
+	n_mov = get_first_number_left(lst_b, (*args).pivot[0]);
+	if (ft_abs(n_mov) > ft_abs(get_last_number_left(lst_b, (*args).pivot[0])))
+		n_mov = get_last_number_left(lst_b, (*args).pivot[0]);
 	return (n_mov);
 }
 
-void	undo_reverse(t_list **lst_a, t_list **lst_b, t_list **op, int n_mov, int count_n)
+void	undo_reverse(t_list **lst_a, t_list **lst_b, t_list **op, t_args args)
 {
 	int	i;
 
 	i = -1;
-	while ((++i) < count_n)
+	while ((++i) < args.count_n)
 	{
-		if (ft_abs(n_mov) > i && n_mov < 0)
+		if (ft_abs(args.n_mov) > i && args.n_mov < 0)
 		{
 			ft_lstadd_front(op, ft_lstnew(ft_strdup("rrr")));
 			ft_reverse_rotate(lst_b);
@@ -217,112 +215,84 @@ void	undo_reverse(t_list **lst_a, t_list **lst_b, t_list **op, int n_mov, int co
 	}
 }
 
-/*void	conditional_function(t_list **lst_a, t_list **lst_b, t_list **op, t_list *tmp, t_list *tmpp, int *pivot, int *pivot_2, int *n_mov)
+void	push_n_rotate(t_list **lst_a, t_list **lst_b, t_list **op, t_args *args)
 {
-	if (*(int *)(**lst_b).content == *pivot)
+	ft_push(lst_b, lst_a);
+	ft_rotate(lst_a);
+	ft_pop(&(*args).tmp[1]);
+	ft_lstadd_front(op, ft_lstnew(ft_strdup("pa")));
+	(*args).n_mov = reset_pivot(*lst_b, args);
+	if ((*args).n_mov > 0)
 	{
-		ft_push(lst_b, lst_a);
-		ft_pop(&tmp);
-		ft_lstadd_front(op, ft_lstnew(ft_strdup("pa")));
+		ft_lstadd_front(op, ft_lstnew(ft_strdup("rr")));
+		ft_rotate(lst_b);
 	}
-	else if (*(int *)(**lst_b).content == *pivot_2)
+	else
+		ft_lstadd_front(op, ft_lstnew(ft_strdup("ra")));
+}
+
+void	rotate_n_b(t_list **lst, t_list **op, t_args args)
+{
+	if (args.n_mov >= 0)
 	{
-		ft_push(lst_b, lst_a);
-		ft_rotate(lst_a);
-		ft_pop(&tmpp);
-		ft_lstadd_front(op, ft_lstnew(ft_strdup("pa")));
-		n_mov = reset_pivot(*lst_b, tmp, tmpp, pivot, pivot_2);
-		if (n_mov > 0)
-		{
-			ft_lstadd_front(op, ft_lstnew(ft_strdup("rr")));
-			ft_rotate(lst_b);
-		}
-		else
-			ft_lstadd_front(op, ft_lstnew(ft_strdup("ra")));
-		count_n++;
+		ft_lstadd_front(op, ft_lstnew(ft_strdup("rb")));
+		ft_rotate(lst);
 	}
 	else
 	{
-		if (n_mov >= 0)
-		{
-			ft_rotate(lst_b);
-			ft_lstadd_front(op, ft_lstnew(ft_strdup("rb")));
-		}
-		else
-		{
-			ft_lstadd_front(op, ft_lstnew(ft_strdup("rrb")));
-			ft_reverse_rotate(lst_b);
-		}
+		ft_lstadd_front(op, ft_lstnew(ft_strdup("rrb")));
+		ft_reverse_rotate(lst);
 	}
 }
-*/
+
+void	conditional_function(t_list **lst_a, t_list **lst_b, t_list **op, t_args *args)
+{
+	if ((*args).tmp[0] == NULL)
+	{
+		(*args).tmp[0] = reverse_list((*args).tmp[1]);
+		(*args).tmp[1] = NULL;
+	}
+	else if (*(int *)(**lst_b).content == (*args).pivot[0])
+	{
+		ft_push(lst_b, lst_a);
+		ft_pop(&(*args).tmp[0]);
+		ft_lstadd_front(op, ft_lstnew(ft_strdup("pa")));
+	}
+	else if (*(int *)(**lst_b).content == (*args).pivot[1])
+	{
+		push_n_rotate(lst_a, lst_b, op, args);
+		(*args).count_n++;
+	}
+	else
+		rotate_n_b(lst_b, op, *args);
+}
+
 void	push_stack_a(t_list **lst_a, t_list **lst_b, t_list *sorted, t_list **op, int size)
 {
-	t_list	*tmp[2];
-	int		n_mov;
-	int		pivot[2];
-	int		count_n;
+	t_args	args;
 
 	if (lst_a == NULL || lst_b == NULL || *lst_b == NULL)
 		return ;
-	tmp[0] = NULL;
-	tmp[1] = NULL;
-	n_mov = 0;
-	count_n = 0;
+	
+	args.tmp[0] = NULL;
+	args.tmp[1] = NULL;
+	args.count_n = 0;
 	while (*lst_b != NULL)
 	{
-		if (tmp[0] == NULL && tmp[1] == NULL)
+		if (args.tmp[0] == NULL && args.tmp[1] == NULL)
 		{
-			tmp_init(&tmp[0], &tmp[1], &sorted, size);
-			n_mov = reset_pivot(*lst_b, tmp[0], tmp[1], &pivot[0], &pivot[1]);
-			undo_reverse(lst_a, lst_b, op, n_mov, count_n);
-			count_n = 0;
-			tmp[0] = reverse_list(tmp[0]);
-		}
-		else if (tmp[0] == NULL)
-		{
-			tmp[0] = reverse_list(tmp[1]);
-			tmp[1] = NULL;
-		}
-		else if (*(int *)(**lst_b).content == pivot[0])
-		{
-			ft_push(lst_b, lst_a);
-			ft_pop(&tmp[0]);
-			ft_lstadd_front(op, ft_lstnew(ft_strdup("pa")));
-		}
-		else if (*(int *)(**lst_b).content == pivot[1])
-		{
-			ft_push(lst_b, lst_a);
-			ft_rotate(lst_a);
-			ft_pop(&tmp[1]);
-			ft_lstadd_front(op, ft_lstnew(ft_strdup("pa")));
-			n_mov = reset_pivot(*lst_b, tmp[0], tmp[1], &pivot[0], &pivot[1]);
-			if (n_mov > 0)
-			{
-				ft_lstadd_front(op, ft_lstnew(ft_strdup("rr")));
-				ft_rotate(lst_b);
-			}
-			else
-				ft_lstadd_front(op, ft_lstnew(ft_strdup("ra")));
-			count_n++;
+			tmp_init(&args, &sorted, size);
+			args.n_mov = reset_pivot(*lst_b, &args);
+			undo_reverse(lst_a, lst_b, op, args);
+			args.count_n = 0;
+			args.tmp[0] = reverse_list(args.tmp[0]);
 		}
 		else
-		{
-			if (n_mov >= 0)
-			{
-				ft_rotate(lst_b);
-				ft_lstadd_front(op, ft_lstnew(ft_strdup("rb")));
-			}
-			else
-			{
-				ft_lstadd_front(op, ft_lstnew(ft_strdup("rrb")));
-				ft_reverse_rotate(lst_b);
-			}
-		}
+			conditional_function(lst_a, lst_b, op, &args);
 		if (*lst_b != NULL)
-			n_mov = reset_pivot(*lst_b, tmp[0], tmp[1], &pivot[0], &pivot[1]);
+			args.n_mov = reset_pivot(*lst_b, &args);
 	}
-	undo_reverse(lst_a, lst_b, op, 0, count_n);
+	undo_reverse(lst_a, lst_b, op, args);
 }
 
 t_list	*find_and_replace(t_list **lst, t_list *pattern, char **cmd)
