@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 03:57:49 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/22 09:22:38 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/28 03:00:33 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	ft_reverse_rotate(t_list **lst)
 	while ((*tmp).next != NULL && (*(*tmp).next).next != NULL)
 		tmp = (*tmp).next;
 	ft_lstadd_front(lst, ft_lstnew((*(*tmp).next).content));
-	(*(*tmp).next).content = NULL;
 	free((*tmp).next);
 	(*tmp).next = NULL;
 }

@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 03:33:29 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/22 03:57:10 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/28 03:59:07 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,44 +25,6 @@ void	init_list(t_list **lst, char **tab, int size)
 	ft_lstadd_front(lst, ft_lstnew(tmp));
 }
 
-t_arraysize	*get_tab(t_list **lst)
-{
-	t_arraysize	*tabsize;
-	t_list		*tmp;
-	int			size;
-	int			i;
-
-	size = ft_lstsize(*lst);
-	tabsize = malloc(sizeof(int) * size);
-	(*tabsize).size = size;
-	(*tabsize).tab = malloc(sizeof(int) * size);
-	i = 0;
-	while (i < size)
-	{
-		tmp = ft_pop(lst);
-		(*tabsize).tab[i] = *(int *)(*tmp).content;
-		i++;
-	}
-	return (tabsize);
-}
-
-t_list	*tab_to_list(t_arraysize *array)
-{
-	t_list	*lst;
-	int		i;
-
-	if (array == NULL)
-		return (NULL);
-	i = 0;
-	lst = NULL;
-	while (i < (*array).size)
-	{
-		ft_lstadd_front(&lst, ft_lstnew(((*array).tab + i)));
-		i++;
-	}
-	return (lst);
-}
-
 t_list	*ft_pop(t_list **lst)
 {
 	t_list	*tmp;
@@ -72,5 +34,21 @@ t_list	*ft_pop(t_list **lst)
 		return (NULL);
 	tmp = *lst;
 	*lst = (**lst).next;
+	return (tmp);
+}
+
+void	clear_poped(t_list *poped)
+{
+	free((*poped).content);
+	free(poped);
+}
+
+t_list	*reverse_list(t_list *lst)
+{
+	t_list	*tmp;
+
+	tmp = NULL;
+	while (lst != NULL)
+		ft_lstadd_front(&tmp, ft_pop(&lst));
 	return (tmp);
 }

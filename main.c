@@ -6,224 +6,113 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 04:06:35 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/22 04:14:14 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/28 03:57:20 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-#include <stdio.h>
+#include "libft/libft.h"
+#include "push_swap.h"
+#include "push_swap_utils.h"
 
-int	ft_nbrslen(char *str)
+t_list	*find_and_replace(t_list *lst, t_list *pattern, char **cmd)
 {
-	int	i;
-	int	c;
-	int	io;
+	t_list	*new;
+	t_list	*cursor;
+	int		count;
 
-	i = 0;
-	c = 0;
-	io = 1;
-	while (*(str + i) != '\0')
+	new = NULL;
+	cursor = pattern;
+	while (lst != NULL)
 	{
-		if (ft_isdigit(*(str + i)) && io)
+		ft_lstadd_front(&new, ft_pop(&lst));
+		if (ft_strncmp((*new).content, (*cursor).content, 3) == 0)
+			cursor = (*cursor).next;
+		else
+			cursor = pattern;
+		if (cursor == NULL)
 		{
-			io = 0;
-			c++;
+			count = ft_lstsize(pattern);
+			while ((count--) > 0)
+				clear_poped(ft_pop(&new));
+			count = -1;
+			while (cmd[++count] != NULL)
+				ft_lstadd_front(&new, ft_lstnew(ft_strdup(cmd[count])));
+			cursor = pattern;
 		}
-		else if (*(str + i) == ' ')
-			io = 1;
-		i++;
 	}
-	return (c);
+	return (reverse_list(new));
 }
 
-int	*ft_sort_init(char **tab, int size)
+void	free_tab(char **tab)
 {
-	int	*n_tab;
-	int	tmp;
 	int	i;
 
-	n_tab = malloc(sizeof(int) * size);
-	if (n_tab == NULL)
-		return (NULL);
 	i = 0;
 	while (tab[i] != NULL)
-	{
-		tmp = ft_atoi(tab[i]);
-		n_tab[i] = tmp;
-		i++;
-	}
-	return (n_tab);
+		free(tab[(i++)]);
+	free(tab);
 }
 
-int	ft_abs(int a)
+t_list	*clean_pattern(t_list *prog, char *pattern, char *replace)
 {
-	if (a < 0)
-		return (-a);
-	return (a);
-}
+	t_list	*pattern_list;
+	t_list	*tmp_pat;
+	char	**p_tab;
+	int		i;
 
-int	ft_min(int a, int b)
-{
-	if (a > b)
-		return (b);
-	return (a);
-}
-
-int	ft_get_left_size(int *tab, int pivot, int size)
-{
-	int	i;
-	int	c;
-
-	c = 0;
 	i = 0;
-	while (i < size)
+	p_tab = ft_split(pattern, ' ');
+	pattern_list = NULL;
+	while (p_tab[i] != NULL)
 	{
-		if (tab[i] < pivot)
-			c++;
-		i++;
-	}
-	return (c);
-}
-
-int	ft_get_right_size(int *tab, int pivot, int size)
-{
-	int	i;
-	int	c;
-
-	c = 0;
-	i = 0;
-	while (i < size)
-	{
-		if (tab[i] > pivot)
-			c++;
-		i++;
-	}
-	return (c);
-}
-
-void	ft_quick_sort(int *tab, int size, t_list **list)
-{
-	int	*tab_1;
-	int	*tab_2;
-	int	*pivot;
-	int	i;
-	int	j;
-	int	left;
-	int	right;
-	int	limit;
-
-	if (size == 0)
-		return ;
-	pivot = malloc(sizeof(int));
-	*pivot = tab[size - 1];
-	left = ft_get_left_size(tab, *pivot, size);
-	right = ft_get_right_size(tab, *pivot, size);
-	if (size <= 1)
-	{
-		ft_lstadd_front(list, ft_lstnew(pivot));
-		return ;
-	}
-	tab_1 = malloc(sizeof(int) * left);
-	tab_2 = malloc(sizeof(int) * right);
-	if (tab_1 == NULL || tab_2 == NULL)
-	{
-		free(tab_1);
-		free(tab_2);
-		return ;
+		ft_lstadd_front(&pattern_list, ft_lstnew(ft_strdup(p_tab[i])));
+		free(p_tab[(i++)]);
 	}
 	i = 0;
-	j = 0;
-	limit = left;
-	while (j < limit)
-	{
-		if (tab[i] < *pivot)
-		{
-			tab_1[j] = tab[i];
-			j++;
-		}
-		i++;
-	}
-	i = 0;
-	j = 0;
-	limit = right;
-	while (j < limit)
-	{
-		if (tab[i] > *pivot)
-		{
-			tab_2[j] = tab[i];
-			j++;
-		}
-		i++;
-	}
-	if (left)
-		ft_quick_sort(tab_1, left, list);
-	ft_lstadd_front(list, ft_lstnew(pivot));
-	if (right)
-		ft_quick_sort(tab_2, right, list);
-	free(tab_1);
-	free(tab_2);
+	free(p_tab);
+	p_tab = ft_split(replace, ' ');
+	tmp_pat = find_and_replace(prog, pattern_list, p_tab);
+	free_tab(p_tab);
+	ft_lstclear(&pattern_list, free);
+	return (tmp_pat);
 }
 
-void	print_list(t_list *lst, int i)
+void	init_prog(t_list **lst_a, t_list **prg, char **tab, int siz)
 {
-	if (lst == NULL)
-		return ;
-	if ((*lst).next != NULL)
-		print_list((*lst).next, i - 1);
-	printf("%d: %d\n", i, *(int *)(*lst).content);
+	t_list	*lst_b;
+	t_list	*lst;
+	int		*n_tab;
+	int		i;
+
+	lst_b = NULL;
+	lst = NULL;
+	if (ft_lstsize(*lst_a) > 300)
+		i = siz / 10;
+	else
+		i = siz / 5;
+	n_tab = init_tab(tab, siz);
+	ft_sort(n_tab, siz, &lst);
+	lst_b = push_stack_b(lst_a, reverse_list(lst), prg, ft_max(4, i));
+	ft_sort(n_tab, siz, &lst);
+	*lst_a = push_stack_a(&lst_b, lst, prg, ft_max(4, i));
+	*prg = clean_pattern(clean_pattern(*prg, "ra rb", "rr"), "rb ra", "rr");
+	*prg = clean_pattern(clean_pattern(*prg, "pa pb", ""), "pb pa", "");
+	free(n_tab);
 }
 
 int	main(int argc, char **argv)
 {
-	char	**tab;
-	t_list	*lst;
-	t_list	*cursor;
-	int		*n_tab;
-	int		min;
-	int		max;
-	int		size;
-	int		i;
+	t_list	*lst_a;
+	t_list	*prog;
 
-	lst = NULL;
-	tab = NULL;
-	cursor = NULL;
-	i = 0;
-	if (argc == 2)
-	{
-		size = ft_nbrslen(argv[1]);
-		n_tab = malloc(sizeof(int) * size);
-		min = 0;
-		max = 1;
-		while (argv[1][min] != '\0')
-		{
-			if (ft_isdigit(argv[1][min]) && max)
-			{
-				n_tab[i] = ft_atoi(&argv[1][min]);
-				max = 0;
-				i++;
-			}
-			else if (argv[1][min] == ' ')
-				max = 1;
-			min++;
-		}
-	}
-	else
-	{
-		tab = malloc(sizeof(char *) * argc);
-		ft_bzero(tab, sizeof(char *) * argc);
-		min = 1;
-		size = argc - 1;
-		while (min < argc)
-		{
-			tab[min - 1] = argv[min];
-			min++;
-		}
-		n_tab = ft_sort_init(tab, size);
-	}
-	ft_quick_sort(n_tab, size, &lst);
-	printf("LST SIZE => %d\nTAB SIZE => %d\n", ft_lstsize(lst), size);
-	print_list(lst, size - 1);
-	free(tab);
-	free(n_tab);
+	if (argc < 2)
+		return (1);
+	lst_a = NULL;
+	prog = NULL;
+	init_list(&lst_a, (argv + 1), argc - 1);
+	init_prog(&lst_a, &prog, (argv + 1), argc - 1);
+	read_list(prog);
+	ft_lstclear(&prog, free);
+	ft_lstclear(&lst_a, free);
 	return (0);
 }

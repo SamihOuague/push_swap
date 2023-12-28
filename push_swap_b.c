@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/27 06:42:34 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/28 03:14:36 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 static void	tmp_init(t_list **tmp, t_list **tmpp, t_list **sorted, int size)
 {
-	int	i;
+	int		i;
 
 	i = -1;
 	while (sorted != NULL && (++i) < size)
@@ -42,7 +42,8 @@ void	check_n_pivot(t_list **la, t_list **lb, t_list **op, int p[2])
 		ft_lstadd_front(lb, ft_pop(la));
 		ft_rotate(lb);
 		ft_lstadd_front(op, ft_lstnew(ft_strdup("pb")));
-		ft_lstadd_front(op, ft_lstnew(ft_strdup("rb")));
+		if (ft_lstsize(*lb) > 1)
+			ft_lstadd_front(op, ft_lstnew(ft_strdup("rb")));
 	}
 	else
 	{
@@ -71,9 +72,9 @@ t_list	*push_stack_b(t_list **lst_a, t_list *sorted, t_list **op, int size)
 		else
 		{
 			if (*(int *)(**lst_a).content <= pivot[0])
-				ft_pop(&tmp[0]);
+				clear_poped(ft_pop(&tmp[0]));
 			else if (*(int *)(**lst_a).content <= pivot[1])
-				ft_pop(&tmp[1]);
+				clear_poped(ft_pop(&tmp[1]));
 			check_n_pivot(lst_a, &lst_b, op, pivot);
 		}
 	}
