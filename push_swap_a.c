@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/28 03:24:23 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/29 08:21:21 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,8 @@ t_list	*push_stack_a(t_list **lst_b, t_list *sorted, t_list **op, int size)
 			tmp_init(&args, &sorted, size);
 			args.n_mov = reset_pivot(*lst_b, &args);
 			undo_reverse(&lst_a, lst_b, op, args);
-			args.count_n = 0;
 			args.tmp[0] = reverse_list(args.tmp[0]);
+			args.count_n = 0;
 		}
 		else
 			cond_func(&lst_a, lst_b, op, &args);

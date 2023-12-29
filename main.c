@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 04:06:35 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/28 03:57:20 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/29 08:17:39 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void	init_prog(t_list **lst_a, t_list **prg, char **tab, int siz)
 	n_tab = init_tab(tab, siz);
 	ft_sort(n_tab, siz, &lst);
 	lst_b = push_stack_b(lst_a, reverse_list(lst), prg, ft_max(4, i));
+	lst = NULL;
 	ft_sort(n_tab, siz, &lst);
 	*lst_a = push_stack_a(&lst_b, lst, prg, ft_max(4, i));
 	*prg = clean_pattern(clean_pattern(*prg, "ra rb", "rr"), "rb ra", "rr");

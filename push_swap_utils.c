@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 03:33:29 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/28 03:59:07 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/29 08:20:14 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,9 @@ t_list	*ft_pop(t_list **lst)
 void	clear_poped(t_list *poped)
 {
 	free((*poped).content);
+	(*poped).content = NULL;
 	free(poped);
+	poped = NULL;
 }
 
 t_list	*reverse_list(t_list *lst)
