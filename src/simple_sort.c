@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 14:28:26 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/30 12:22:37 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/30 15:03:37 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	simple_sort_push_b(t_list **lst_a, t_list **lst_b, t_list **op)
 {
 	while (ft_lstsize(*lst_a) > 3)
 	{
-		if ((*(int *)(**lst_a).content == get_min(*lst_a)))
+		if (*(int *)(**lst_a).content == get_min(*lst_a))
 		{
 			ft_push(lst_a, lst_b);
 			ft_lstadd_front(op, ft_lstnew(ft_strdup("pb")));

@@ -6,7 +6,7 @@
 #    By: souaguen <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/22 08:37:09 by  souaguen         #+#    #+#              #
-#    Updated: 2023/12/30 11:31:26 by souaguen         ###   ########.fr        #
+#    Updated: 2023/12/30 15:34:57 by souaguen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC_BONUS=src/checker_utils.c \
 SRC_DIR=src
 OBJ=$(SRC:.c=.o)
 OBJ_BONUS=$(SRC_BONUS:.c=.o)
-CFLAGS=-Wall -Werror -Wextra -c -g -I./includes -I./
+CFLAGS=-Wall -Werror -Wextra -I./includes -I./
 LIBFT=libft.a
 LIBFT_DIR=./libft
 
@@ -38,15 +38,15 @@ $(NAME): $(OBJ) main.o
 
 all: $(NAME)
 
-clean:
-	make -C $(LIBFT_DIR) clean
+clean: 
 	rm -f $(OBJ) main.o
 	rm -f $(OBJ_BONUS)
+	make -C $(LIBFT_DIR) clean
 
 fclean: clean
-	make -C $(LIBFT_DIR) fclean
 	rm -f $(NAME)
 	rm -f $(BONUS_NAME)
+	make -C $(LIBFT_DIR) fclean
 
 bonus: $(OBJ) $(OBJ_BONUS)
 	make -C $(LIBFT_DIR) all bonus
