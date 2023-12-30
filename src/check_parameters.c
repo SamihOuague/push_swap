@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 04:06:35 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/30 12:38:59 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/30 18:50:20 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	check_repeat(int *tab, int siz)
 	lst = NULL;
 	ft_sort(tab, siz, &lst);
 	cursor = lst;
-	while ((*cursor).next != NULL)
+	while (cursor != NULL && (*cursor).next != NULL)
 	{
 		if (*(int *)(*cursor).content == *(int *)(*(*cursor).next).content)
 			break ;
@@ -78,6 +78,20 @@ int	check_repeat(int *tab, int siz)
 	free(tab);
 	ft_lstclear(&lst, free);
 	return (i != siz - 1);
+}
+
+int	is_sorted(t_list **lst)
+{
+	t_list	*cursor;
+
+	cursor = *lst;
+	while (cursor != NULL && (*cursor).next != NULL)
+	{
+		if (!check_number(cursor))
+			return (0);
+		cursor = (*cursor).next;
+	}
+	return (1);
 }
 
 int	check_params(char **tab)
@@ -92,10 +106,12 @@ int	check_params(char **tab)
 		j = -1;
 		while (tab[i][(++j)] != '\0')
 		{
-			if (!ft_isdigit(tab[i][j]) && tab[i][j] != '-')
+			if (!ft_isdigit(tab[i][j]) && !(j == 0 && tab[i][j] == '-'))
 				return (0);
 		}
 		if (is_overflow(tab[i]))
+			return (0);
+		else if (ft_strncmp("-", tab[i], 10) == 0)
 			return (0);
 	}
 	n_tab = init_tab(tab, i);

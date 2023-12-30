@@ -6,7 +6,7 @@
 #    By: souaguen <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/22 08:37:09 by  souaguen         #+#    #+#              #
-#    Updated: 2023/12/30 15:34:57 by souaguen         ###   ########.fr        #
+#    Updated: 2023/12/30 18:14:18 by souaguen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC_BONUS=src/checker_utils.c \
 SRC_DIR=src
 OBJ=$(SRC:.c=.o)
 OBJ_BONUS=$(SRC_BONUS:.c=.o)
-CFLAGS=-Wall -Werror -Wextra -I./includes -I./
+CFLAGS=-Wall -Werror -Wextra -g -I./includes -I./
 LIBFT=libft.a
 LIBFT_DIR=./libft
 
