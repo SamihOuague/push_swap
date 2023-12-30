@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/28 03:14:36 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/30 13:04:14 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "push_swap.h"
 #include "push_swap_utils.h"
 #include "push_swap_prog.h"
-#include <stdio.h>
 
 static void	tmp_init(t_list **tmp, t_list **tmpp, t_list **sorted, int size)
 {
