@@ -6,42 +6,41 @@
 #    By: souaguen <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/22 08:37:09 by  souaguen         #+#    #+#              #
-#    Updated: 2023/12/29 15:57:06 by souaguen         ###   ########.fr        #
+#    Updated: 2023/12/30 11:31:26 by souaguen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC=cc
 NAME=push_swap
 BONUS_NAME=checker
-SRC=push_swap.c \
-    push_swap_a.c \
-    simple_sort.c \
-    push_swap_a_two.c \
-    push_swap_b.c \
-    ft_quick_sort.c \
-    push_swap_utils.c \
-    push_swap_a_utils.c \
-    push_swap_prog.c \
-    main.c
-SRC_BONUS=checker_utils.c \
-	  push_swap_prog.c \
-	  push_swap_utils.c \
-	  checker.c
+SRC=src/push_swap.c \
+    src/push_swap_a.c \
+    src/simple_sort.c \
+    src/push_swap_a_two.c \
+    src/push_swap_b.c \
+    src/ft_quick_sort.c \
+    src/push_swap_utils.c \
+    src/push_swap_a_utils.c \
+    src/push_swap_prog.c \
+    src/check_parameters.c
+SRC_BONUS=src/checker_utils.c \
+	  src/checker.c
+SRC_DIR=src
 OBJ=$(SRC:.c=.o)
 OBJ_BONUS=$(SRC_BONUS:.c=.o)
-CFLAGS=-Wall -Werror -Wextra -c -g
+CFLAGS=-Wall -Werror -Wextra -c -g -I./includes -I./
 LIBFT=libft.a
 LIBFT_DIR=./libft
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) main.o
 	make -C $(LIBFT_DIR) all bonus
-	$(CC) $(OBJ) -o $(NAME) -L$(LIBFT_DIR) -l:$(LIBFT)
+	$(CC) $(OBJ) main.o -o $(NAME) -L$(LIBFT_DIR) -l:$(LIBFT)
 
 all: $(NAME)
 
 clean:
 	make -C $(LIBFT_DIR) clean
-	rm -f $(OBJ)
+	rm -f $(OBJ) main.o
 	rm -f $(OBJ_BONUS)
 
 fclean: clean
@@ -49,9 +48,9 @@ fclean: clean
 	rm -f $(NAME)
 	rm -f $(BONUS_NAME)
 
-bonus: $(OBJ_BONUS)
+bonus: $(OBJ) $(OBJ_BONUS)
 	make -C $(LIBFT_DIR) all bonus
-	$(CC) $(OBJ_BONUS) -o $(BONUS_NAME) -L$(LIBFT_DIR) -l:$(LIBFT)
+	$(CC) $(OBJ) $(OBJ_BONUS) -o $(BONUS_NAME) -L$(LIBFT_DIR) -l:$(LIBFT)
 
 re: fclean all
 

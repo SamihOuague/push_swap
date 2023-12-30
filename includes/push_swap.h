@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 03:58:21 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/29 15:00:58 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/29 19:03:20 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,5 @@ int		get_first_number_left(t_list *lst, int pivot);
 int		get_last_number_left(t_list *lst, int pivot);
 int		ft_max(int a, int b);
 int		ft_abs(int a);
+int		check_number(t_list *lst);
 #endif

@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap_utils.h                                  :+:      :+:    :+:   */
+/*   checker_utils.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/22 03:46:36 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/28 03:19:13 by souaguen         ###   ########.fr       */
+/*   Created: 2023/12/29 18:27:42 by  souaguen         #+#    #+#             */
+/*   Updated: 2023/12/30 12:39:23 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_UTILS_H
-# define PUSH_SWAP_UTILS_H
-# include "libft/libft.h"
+#ifndef CHECKER_UTILS_H
+# define CHECKER_UTILS_H
 
-t_list		*ft_pop(t_list **lst);
-void		clear_poped(t_list *poped);
-void		init_list(t_list **lst, char **tab, int size);
-void		ft_sort(int *tab, int size, t_list **list);
+int	check_all(t_list **lst, t_list **lst_b, char *str);
 
 #endif

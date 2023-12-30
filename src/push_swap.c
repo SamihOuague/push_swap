@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 04:06:35 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/29 14:58:46 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/30 12:30:40 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "push_swap.h"
 #include "push_swap_prog.h"
 #include "push_swap_utils.h"
+#include "check_parameters.h"
 
 t_list	*find_and_replace(t_list *lst, t_list *pattern, char **cmd)
 {

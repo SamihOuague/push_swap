@@ -6,20 +6,21 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 03:33:29 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/29 08:20:14 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/30 10:25:00 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
 #include "push_swap_utils.h"
 
-void	init_list(t_list **lst, char **tab, int size)
+void	init_list(t_list **lst, char **tab)
 {
 	int	*tmp;
 
 	tmp = NULL;
-	if (size > 1)
-		init_list(lst, &tab[1], size - 1);
+	if (tab == NULL || tab[0] == NULL)
+		return ;
+	init_list(lst, &tab[1]);
 	tmp = malloc(sizeof(int));
 	*tmp = ft_atoi(tab[0]);
 	ft_lstadd_front(lst, ft_lstnew(tmp));

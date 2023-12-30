@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 14:28:26 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/29 14:54:49 by souaguen         ###   ########.fr       */
+/*   Updated: 2023/12/30 12:22:37 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,31 +38,31 @@ int	get_min(t_list *lst)
 	return (min);
 }
 
-void	three_sort(t_list **lst_a, t_list **op)
+void	three_sort(t_list **la, t_list **op)
 {
-	if (ft_lstsize(*lst_a) < 2)
+	if (ft_lstsize(*la) < 2)
 		return ;
-	if (*(int *)(*ft_lstlast(*lst_a)).content == get_min(*lst_a))
+	if (*(int *)(*ft_lstlast(*la)).content == get_min(*la))
 	{
-		if (!check_number(*lst_a) && ft_lstsize(*lst_a) >= 3)
+		if (!check_number(*la) && ft_lstsize(*la) >= 3)
 			ft_lstadd_front(op, ft_lstnew(ft_strdup("sa")));
 		ft_lstadd_front(op, ft_lstnew(ft_strdup("rra")));
 	}
-	else if (ft_lstsize(*lst_a) >= 3)
+	else if (ft_lstsize(*la) >= 3)
 	{
-		if (!check_number((**lst_a).next)
-			&& *(int *)(**lst_a).content == get_min(*lst_a))
+		if (!check_number((**la).next)
+			&& *(int *)(**la).content == get_min(*la))
 		{
 			ft_lstadd_front(op, ft_lstnew(ft_strdup("ra")));
 			ft_lstadd_front(op, ft_lstnew(ft_strdup("sa")));
 			ft_lstadd_front(op, ft_lstnew(ft_strdup("rra")));
 		}
-		else if (*(int *)(**lst_a).content != get_min(*lst_a))
+		else if (*(int *)(**la).content != get_min(*la))
 		{
-			if (!check_number((**lst_a).next))
-				ft_lstadd_front(op, ft_lstnew(ft_strdup("sa")));
-			else
+			if (*(int *)(**la).content > *(int *)(*ft_lstlast(*la)).content)
 				ft_lstadd_front(op, ft_lstnew(ft_strdup("ra")));
+			else
+				ft_lstadd_front(op, ft_lstnew(ft_strdup("sa")));
 		}
 	}
 }
