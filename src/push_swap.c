@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 04:06:35 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/30 18:30:43 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/01 07:31:55 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ void	init_prog(t_list **lst_a, t_list **prg, char **tab, int siz)
 	lst = NULL;
 	if (is_sorted(lst_a))
 		return ;
-	else if (ft_lstsize(*lst_a) > 300)
-		i = siz / 10;
+	else if (ft_lstsize(*lst_a) > 299)
+		i = siz / (10 - (ft_lstsize(*lst_a) % 10 != 0));
 	else if (ft_lstsize(*lst_a) > 12)
 		i = siz / 5;
 	else

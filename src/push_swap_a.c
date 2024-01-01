@@ -6,7 +6,7 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/30 13:03:53 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/01 07:31:06 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static void	tmp_init(t_args *args, t_list **sorted, int size)
 	i = -1;
 	while (sorted != NULL && (++i) < (size / 2))
 	{
-		if (i < (size / 4))
-			ft_lstadd_front(&(*args).tmp[0], ft_pop(sorted));
-		else
+		if (i > (size / 3))
 			ft_lstadd_front(&(*args).tmp[1], ft_pop(sorted));
+		else
+			ft_lstadd_front(&(*args).tmp[0], ft_pop(sorted));
 	}
 }
 
