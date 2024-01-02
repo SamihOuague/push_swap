@@ -6,13 +6,15 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 03:58:21 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/29 19:03:20 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:12:00 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 # include "libft/libft.h"
+# include "push_swap_prog.h"
+# include "push_swap_utils.h"
 
 typedef struct s_args
 {

@@ -6,11 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 03:57:49 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/30 13:03:09 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:16:53 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap.h"
 
 void	ft_swap(int *a, int *b)
 {

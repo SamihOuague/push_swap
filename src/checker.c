@@ -6,15 +6,12 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/17 03:49:38 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/30 13:02:48 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:19:07 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "push_swap.h"
-#include "push_swap_prog.h"
 #include "checker_utils.h"
-#include "push_swap_utils.h"
 #include "check_parameters.h"
 
 char	*lst_to_str(t_list **lst)

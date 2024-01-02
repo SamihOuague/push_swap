@@ -6,12 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 03:33:29 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/30 10:25:00 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:14:11 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include "push_swap_utils.h"
+#include "push_swap.h"
 
 void	init_list(t_list **lst, char **tab)
 {

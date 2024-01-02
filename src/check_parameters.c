@@ -6,14 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 04:06:35 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/30 18:50:20 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:18:03 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "push_swap.h"
-#include "push_swap_prog.h"
-#include "push_swap_utils.h"
 
 char	**join_n_split_params(char **array, int size)
 {

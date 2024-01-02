@@ -6,7 +6,7 @@
 #    By: souaguen <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/22 08:37:09 by  souaguen         #+#    #+#              #
-#    Updated: 2023/12/30 18:14:18 by souaguen         ###   ########.fr        #
+#    Updated: 2024/01/02 08:07:15 by souaguen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,13 +39,11 @@ $(NAME): $(OBJ) main.o
 all: $(NAME)
 
 clean: 
-	rm -f $(OBJ) main.o
-	rm -f $(OBJ_BONUS)
+	rm -f $(OBJ) $(OBJ_BONUS) main.o
 	make -C $(LIBFT_DIR) clean
 
 fclean: clean
-	rm -f $(NAME)
-	rm -f $(BONUS_NAME)
+	rm -f $(NAME) $(BONUS_NAME)
 	make -C $(LIBFT_DIR) fclean
 
 bonus: $(OBJ) $(OBJ_BONUS)

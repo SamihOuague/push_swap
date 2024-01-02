@@ -6,14 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 02:38:21 by  souaguen         #+#    #+#             */
-/*   Updated: 2024/01/01 07:31:06 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:12:41 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "push_swap.h"
-#include "push_swap_utils.h"
-#include "push_swap_prog.h"
 
 static void	tmp_init(t_args *args, t_list **sorted, int size)
 {

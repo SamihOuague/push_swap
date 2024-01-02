@@ -6,14 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/29 14:28:26 by  souaguen         #+#    #+#             */
-/*   Updated: 2023/12/30 15:03:37 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:14:25 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "push_swap.h"
-#include "push_swap_prog.h"
-#include "push_swap_utils.h"
 
 int	check_number(t_list *lst)
 {

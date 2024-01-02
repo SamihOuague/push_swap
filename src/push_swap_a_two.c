@@ -6,12 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 15:41:04 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/27 23:22:48 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:13:01 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include "push_swap_prog.h"
 
 int	ft_abs(int a)
 {

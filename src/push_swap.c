@@ -6,14 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 04:06:35 by  souaguen         #+#    #+#             */
-/*   Updated: 2024/01/01 07:31:55 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:17:21 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "push_swap.h"
-#include "push_swap_prog.h"
-#include "push_swap_utils.h"
 #include "check_parameters.h"
 
 t_list	*find_and_replace(t_list *lst, t_list *pattern, char **cmd)

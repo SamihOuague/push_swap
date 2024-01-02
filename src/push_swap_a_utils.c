@@ -6,11 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 15:11:33 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/28 02:16:13 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:13:27 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
+#include "push_swap.h"
 
 void	read_list(t_list *lst)
 {

@@ -6,11 +6,11 @@
 /*   By: souaguen <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 20:27:17 by souaguen          #+#    #+#             */
-/*   Updated: 2023/12/27 23:24:08 by souaguen         ###   ########.fr       */
+/*   Updated: 2024/01/02 08:12:26 by souaguen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap_prog.h"
+#include "push_swap.h"
 
 static int	partition(int *tab, int start, int end)
 {
